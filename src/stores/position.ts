@@ -51,12 +51,10 @@ export const usePositionStore = defineStore('positions', {
             this.startPosX = x;
             this.startPosY = y;
             this.snakeBody.push({posX: this.startPosX, posY: this.startPosY});
-            console.log(this.snakeBody);
         },
 
         move() {
             // moving snake (change posX and posY)
-            // this.timeoutIdId = setInterval(() => {
                 
                 if (this.direction == 'right') {
                     this.startPosX++;
@@ -86,7 +84,9 @@ export const usePositionStore = defineStore('positions', {
 
 
                 //add new element to snake body
-                this.snakeBody.unshift({posX: this.startPosX, posY: this.startPosY});
+                this.snakeBody.unshift({posX: this.startPosX, 
+                                        posY: this.startPosY, 
+                                        direction: this.direction});
 
                 //remove first element of snake body
                 this.snakeBody.pop();
@@ -98,9 +98,11 @@ export const usePositionStore = defineStore('positions', {
 
 
                 this.ifSnakeBitesSelf();
+
+                if(this.snakeBody.length >= 99) {
+                    this.gameOver();
+                }
                 
-            // }, 1000);
-            
         },
         createMouse() {
             //create random positions for mouse
@@ -110,9 +112,9 @@ export const usePositionStore = defineStore('positions', {
             })
             
             //if mouse appears in snake body
-            while (isMouseInSnakeBody) {
+            while (isMouseInSnakeBody && this.getScore < 100) {
                 [x, y] = this.getRandomPositons();
-                console.log('infinite');
+                
                 isMouseInSnakeBody = this.snakeBody.find((item:any) => {
                     return item.posX === x && item.posY === y ? true : false;
                 });
@@ -123,7 +125,7 @@ export const usePositionStore = defineStore('positions', {
         startGame() {
             this.setPositions();
             this.createMouse();
-            this.timeoutId = setInterval(this.move, 1000);
+            this.timeoutId = setInterval(this.move, 700);
         
         },
         handlers() {
@@ -170,7 +172,7 @@ export const usePositionStore = defineStore('positions', {
                         this.move();
                         clearInterval(this.timeoutId);
                         
-                        this.timeoutId = setInterval(this.move, 1000);
+                        this.timeoutId = setInterval(this.move, 700);
                     
                 }
 
@@ -204,7 +206,7 @@ export const usePositionStore = defineStore('positions', {
         gameOver() {
             //stop game
             
-            console.log('Game over');
+            
             clearInterval(this.timeoutId);
             for(let i = 0; i < 9999; i++) {
                 window.clearInterval(i);

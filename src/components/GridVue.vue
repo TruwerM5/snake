@@ -15,8 +15,11 @@ PositionStore.handlers();
 <h1>{{ PositionStore.getScore }}</h1>
 <div class="grid">
     <BlockVue 
-    v-for="p,i in PositionStore.positions" :pos-x="p.posX" :pos-y="p.posY" :key="i"
-    :class="{'mouse': PositionStore.mouseX === p.posX && PositionStore.mouseY === p.posY}" />
+    v-for="p,i in PositionStore.positions" :key="i" :pos-x="p.posX" :pos-y="p.posY" :index="i">
+        <template #mouse v-if="PositionStore.mouseX === p.posX && PositionStore.mouseY === p.posY">
+            <div class="mouse"></div>
+        </template>
+    </BlockVue>
 </div>
 
 </template>
