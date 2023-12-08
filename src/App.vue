@@ -1,8 +1,11 @@
 <script setup lang="ts">
 import GridVue from './components/GridVue.vue';
-import { usePositionStore } from './stores/position';
+import ScoreVue from './components/ScoreVue.vue';
+import KeyboardVue from './components/KeyboardVue.vue';
 
-const PositionStore = usePositionStore();
+import { useSnakeStore } from './stores/snakeStore';
+
+const PositionStore = useSnakeStore();
 
 //draw grid
 PositionStore.createPositions();
@@ -11,9 +14,14 @@ PositionStore.createPositions();
 
 <template>
   <GridVue/>
+  <ScoreVue />
+  <KeyboardVue class="keyboard" />
+
 </template>
 
-<style scoped>
+<style scoped lang="sass">
 
-
+@media screen and (min-width: 1024px)
+    .keyboard
+        display: none
 </style>

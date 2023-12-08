@@ -7,7 +7,7 @@ interface Position {
     posY: number | never;
 }
 
-export const usePositionStore = defineStore('positions', {
+export const useSnakeStore = defineStore('positions', {
     state: () => {
         return {
             direction: <string>('right'),
@@ -131,11 +131,13 @@ export const usePositionStore = defineStore('positions', {
         handlers() {
             //handlers for keyboard
             window.addEventListener('keydown', (e) => {
+               
                 let arrows = ['ArrowLeft', 'ArrowRight', 'ArrowUp', 'ArrowDown'];
 
                 let arrowKey = arrows.find(item => item === e.code);
 
                 if (arrowKey) {
+                    e.preventDefault();
                     
                     if ((e.code == 'ArrowRight' && this.direction == 'right') ||
                         (e.code == 'ArrowLeft' && this.direction == 'left') ||
@@ -214,6 +216,38 @@ export const usePositionStore = defineStore('positions', {
             this.$reset();
             this.createPositions();
             this.startGame();
+        },
+
+        //handle buttons (tags)
+        handleButtonClick(button: string) {
+            if(button === 'up') {
+                if(this.direction === 'bottom' || this.direction === 'top') {
+                    return;
+                }
+                this.direction = 'top';
+                console.log('Clicked');
+            } else if(button === 'down') {
+                if(this.direction === 'top' || this.direction === 'bottom') {
+                    return;
+                }
+                this.direction = 'bottom';
+            } else if(button === 'left') {
+                if (this.direction === 'right' || this.direction === 'left') {
+                    return;
+                }
+                this.direction = 'left';
+            } else if(button === 'right') {
+                if (this.direction === 'right' || this.direction === 'left') {
+                    return;
+                }
+                this.direction = 'right';
+            }
+
+            clearInterval(this.timeoutId);
+            this.move();
+            clearInterval(this.timeoutId);
+            
+            this.timeoutId = setInterval(this.move, 700);
         }
         
     }

@@ -1,9 +1,9 @@
 <script setup lang="ts">
 
 import { ref, reactive } from 'vue';
-import { usePositionStore } from '@/stores/position';
+import { useSnakeStore } from '@/stores/snakeStore';
 
-const PositionStore = usePositionStore();
+const PositionStore = useSnakeStore();
 
 const props = defineProps({
     posX: {
@@ -111,8 +111,8 @@ function getHeadRotation() {
     clip-path: polygon(25% 0%, 75% 0%, 100% 50%, 93% 100%, 7% 100%, 0% 50%)
 .eye
     position: absolute
-    width: 10px
-    height: 10px
+    width: 10%
+    height: 10%
     border-radius: 50%
     background-color: #000
     z-index: 10
@@ -120,7 +120,7 @@ function getHeadRotation() {
     top: 50%
     transform: translateY(-50%)
     &_left
-        left: 10px
+        left: 15%
     &_right
-        right: 10px
+        right: 15%
 </style>
